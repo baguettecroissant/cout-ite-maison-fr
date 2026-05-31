@@ -27,7 +27,7 @@ export const blogArticles: BlogArticle[] = [
     readTime: "16 min",
     category: "Prix et Tarifs",
     emoji: "💰",
-    image: "/images/blog/1.webp",
+    image: "/images/blog/prix-ite-2026.png",
     content: `
       <p>Le budget d'une <strong>isolation thermique par l'extérieur (ITE)</strong> oscille généralement entre <strong>100€ et 250€ TTC le m²</strong>, fourniture et pose comprises. En 2026, cette fourchette varie principalement selon la technique retenue (enduit ou bardage), la nature de l'isolant (polystyrène expansé, laine de roche, fibre de bois) et les particularités architecturales de votre habitation. Ce guide complet vous livre tous les tarifs détaillés, les coûts annexes, les aides applicables et des simulations réalistes pour maîtriser votre projet.</p>
       
@@ -111,7 +111,7 @@ export const blogArticles: BlogArticle[] = [
     readTime: "13 min",
     category: "Aides de l'État",
     emoji: "🏛️",
-    image: "/images/blog/2.webp",
+    image: "/images/blog/aides-ite-maprimerenov-2026.png",
     content: `
       <p>En 2026, l'État français maintient un accompagnement financier massif pour l'<strong>isolation thermique par l'extérieur (ITE)</strong> des murs. C'est l'un des travaux les plus encouragés car il éradique les ponts thermiques et améliore grandement l'étiquette DPE. Les subventions varient selon les catégories de revenus de l'ANAH (de la couleur Bleue à la couleur Rose).</p>
       
@@ -177,12 +177,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "12 min",
     category: "Comparatifs",
     emoji: "⚖️",
-    image: "/images/blog/3.webp",
+    image: "/images/blog/ite-vs-iti-comparatif.png",
     content: `
       <p>Lors d'une rénovation énergétique murale, le choix du sens de l'isolation est l'un des premiers arbitrages techniques. Faut-il isoler par l'extérieur (ITE) ou par l'intérieur (ITI) ? Si l'ITI est historiquement majoritaire en France, l'ITE s'impose désormais comme la référence absolue en rénovation performante.</p>
       
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/1.webp" alt="Thermique comparative montrant les pertes d'une maison isolée par l'intérieur contre l'étanchéité d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/ite-vs-iti-comparatif.png" alt="Thermique comparative montrant les pertes d'une maison isolée par l'intérieur contre l'étanchéité d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Visualisation des zones de déperdition thermique par infrarouge.</figcaption>
       </figure>
 
@@ -239,12 +239,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "11 min",
     category: "Guides Techniques",
     emoji: "⚙️",
-    image: "/images/blog/4.webp",
+    image: "/images/blog/ite-enduit-pse-guide.png",
     content: `
       <p>L'<strong>enduit mince sur polystyrène expansé (PSE)</strong> est la technique d'isolation extérieure la plus répandue en France. Elle représente près de <strong>75% des chantiers chiffrés</strong> en raison de son excellent rapport performance/prix et de la diversité des finitions disponibles (gratté, taloché, ribbé).</p>
       
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/2.webp" alt="Plaques de polystyrène graphité collées et chevillées sur une façade en brique" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/ite-enduit-pse-guide.png" alt="Plaques de polystyrène graphité collées et chevillées sur une façade en brique" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Pose calée-chevillée de PSE gris sur support maçonné propre.</figcaption>
       </figure>
 
@@ -273,12 +273,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "12 min",
     category: "Guides Techniques",
     emoji: "🪵",
-    image: "/images/blog/5.webp",
+    image: "/images/blog/ite-bardage-bois-composite.png",
     content: `
       <p>Le <strong>bardage ventilé</strong> est une solution d'isolation thermique par l'extérieur à la fois esthétique, durable et extrêmement performante. Contrairement aux systèmes d'ITE sous enduit, le bardage ménage une lame d'air continue entre l'isolant et le parement extérieur. Cette configuration favorise l'évacuation de la vapeur d'eau et supprime tout risque de condensation.</p>
       
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/3.webp" alt="Maison d'architecte contemporaine avec parement extérieur en clins de bardage bois douglas" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/ite-bardage-bois-composite.png" alt="Maison d'architecte contemporaine avec parement extérieur en clins de bardage bois douglas" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Maison individuelle contemporaine rénovée avec bardage bois composite.</figcaption>
       </figure>
 
@@ -329,12 +329,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "10 min",
     category: "Législation DPE",
     emoji: "📊",
-    image: "/images/blog/6.webp",
+    image: "/images/blog/dpe-passoire-thermique-ite.png",
     content: `
       <p>Les passoires thermiques (classes F et G du Diagnostic de Performance Énergétique) sont dans le collimateur de la loi Climat et Résilience. Avec l'interdiction progressive de mise en location de ces logements, l'<strong>isolation thermique par l'extérieur (ITE)</strong> s'impose comme la solution de référence pour améliorer massivement la note DPE en une seule opération.</p>
 
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/4.webp" alt="Infographie DPE passant de la lettre G rouge très énergivore à la lettre B verte" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/dpe-passoire-thermique-ite.png" alt="Infographie DPE passant de la lettre G rouge très énergivore à la lettre B verte" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Le gain de DPE : valorisation immédiate du patrimoine.</figcaption>
       </figure>
 
@@ -363,12 +363,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "11 min",
     category: "Guides d'Achat",
     emoji: "🔍",
-    image: "/images/blog/1.webp",
+    image: "/images/blog/devis-ite-pieges.png",
     content: `
       <p>L'isolation extérieure d'une maison représente un budget significatif (souvent supérieur à 15 000€). Pour éviter les litiges de fin de chantier ou les surcoûts imprévus, il est indispensable de savoir analyser en détail le devis proposé par votre façadier. Voici les 9 pièges et omissions les plus fréquents.</p>
 
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/5.webp" alt="Contrat de travaux d'isolation en cours d'analyse avec les mentions RGE et décennales requises" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/devis-ite-pieges.png" alt="Contrat de travaux d'isolation en cours d'analyse avec les mentions RGE et décennales requises" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Analyse attentive du devis et des conditions générales de vente.</figcaption>
       </figure>
 
@@ -394,12 +394,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "13 min",
     category: "Copropriété",
     emoji: "🏢",
-    image: "/images/blog/2.webp",
+    image: "/images/blog/ite-copropriete-guide.png",
     content: `
       <p>Isoler un immeuble collectif par l'extérieur (ITE) est le moyen le plus efficace pour réduire les charges de copropriété. Cependant, le processus de décision en assemblée générale (AG) et le montage du dossier d'aides diffèrent grandement des maisons individuelles.</p>
 
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/6.webp" alt="Immeuble d'habitation urbain collectif en briques avec un échafaudage pour ravalement ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/ite-copropriete-guide.png" alt="Immeuble d'habitation urbain collectif en briques avec un échafaudage pour ravalement ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Exemple de grand chantier d'ITE mené en copropriété urbaine.</figcaption>
       </figure>
 
@@ -429,12 +429,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "11 min",
     category: "Guides Techniques",
     emoji: "🏗️",
-    image: "/images/blog/3.webp",
+    image: "/images/blog/isolation-exterieure-etapes-chantier.png",
     content: `
       <p>La pose d'une <strong>isolation thermique par l'extérieur (ITE)</strong> est un chantier d'envergure qui s'étend généralement sur une période de <strong>2 à 4 semaines</strong> pour une maison individuelle. L'avantage majeur est que les travaux s'effectuent exclusivement à l'extérieur : vous pouvez habiter normalement dans votre maison durant toute la durée du chantier.</p>
 
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/1.webp" alt="Outil de talochage appliquant l'enduit mince de finition sur la trame de verre d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/isolation-exterieure-etapes-chantier.png" alt="Outil de talochage appliquant l'enduit mince de finition sur la trame de verre d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Application du sous-enduit tramé par un façadier RGE.</figcaption>
       </figure>
 
@@ -461,12 +461,12 @@ export const blogArticles: BlogArticle[] = [
     readTime: "13 min",
     category: "Comparatifs",
     emoji: "🧬",
-    image: "/images/blog/4.webp",
+    image: "/images/blog/isolants-ite-comparatif.png",
     content: `
       <p>Le choix de l'isolant est déterminant pour l'efficacité thermique en hiver, le confort thermique en été, l'isolation phonique et le budget global de votre projet d'isolation thermique par l'extérieur (ITE). Voici une analyse comparative objective des principaux isolants du marché.</p>
 
       <figure class="my-8 space-y-2">
-        <img src="/images/blog/2.webp" alt="Différents types d'isolants ITE posés côte à côte pour comparaison de texture et d'épaisseur" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <img src="/images/blog/isolants-ite-comparatif.png" alt="Différents types d'isolants ITE posés côte à côte pour comparaison de texture et d'épaisseur" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
         <figcaption class="text-xs text-gray-500 text-center font-light">Echantillons d'isolants rigides certifiés ACERMI.</figcaption>
       </figure>
 
