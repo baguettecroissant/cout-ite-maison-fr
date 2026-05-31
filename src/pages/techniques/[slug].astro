@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuoteWidget from '../../components/QuoteWidget.astro';
+import { siteConfig } from '../../../site.config';
+import { techniques, type Technique } from '../../data/techniques';
+
+export function getStaticPaths() {
+  return techniques.map(tech => ({
+    params: { slug: tech.slug },
+    props: { tech },
+  }));
+}
+
+const { tech } = Astro.props as { tech: Technique };
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": tech.name,
+    "description": tech.summary,
+    "serviceType": tech.shortName,
+    "provider": {
+      "@type": "Organization",
+      "name": siteConfig.name,
+      "url": `https://www.${siteConfig.domain}`
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "100",
+      "highPrice": "250",
+      "priceRange": tech.priceRange
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `https://www.${siteConfig.domain}` },
+      { "@type": "ListItem", "position": 2, "name": "Techniques ITE", "item": `https://www.${siteConfig.domain}/techniques` },
+      { "@type": "ListItem", "position": 3, "name": tech.shortName },
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={`${tech.shortName} : Prix au m², Épaisseurs & Fiche Technique 2026`}
+  description={`Quel est le prix au m² de la technique ${tech.shortName} ? Retrouvez la conductivité thermique (lambda), les points forts/faibles, et fiches CSTB.`}
+  canonical={`/techniques/${tech.slug}`}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="gradient-hero text-white py-12 md:py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <nav class="text-xs text-gray-400 font-space flex items-center gap-1.5">
+        <a href="/" class="hover:text-white transition-colors">Accueil</a>
+        <span>›</span>
+        <a href="/techniques" class="hover:text-white transition-colors">Techniques ITE</a>
+        <span>›</span>
+        <span class="text-gray-300">{tech.shortName}</span>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <span class="bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold font-space uppercase tracking-wider">
+          Fiche RGE 2026
+        </span>
+        <span class="bg-white/10 text-white px-3.5 py-1.5 rounded-full text-xs font-bold font-space uppercase">
+          {tech.rValue}
+        </span>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl font-bitter font-extrabold leading-tight text-white max-w-3xl">
+        {tech.name}
+      </h1>
+
+      <div class="flex items-center gap-4 text-xs text-gray-300 font-space pt-2">
+        <span>⏱️ Durabilité estimée : <strong>{tech.lifespan}</strong></span>
+        <span>📐 Épaisseur minimale : <strong>{tech.thickness}</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Space -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid lg:grid-cols-12 gap-10">
+      
+      <!-- Left Column: Details -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- Summary Box -->
+        <div class="bg-white rounded-3xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-4">
+          <h2 class="font-bitter font-bold text-xl text-gray-900">⚙️ Description technique complète</h2>
+          <p class="text-gray-600 leading-relaxed text-sm md:text-base font-light">{tech.fullDescription}</p>
+        </div>
+
+        <!-- Technical specifications table -->
+        <div class="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm space-y-4">
+          <h3 class="font-bitter font-bold text-lg text-gray-900 border-b border-gray-100 pb-2">📋 Caractéristiques de la technique</h3>
+          <div class="grid sm:grid-cols-2 gap-4 text-xs font-space pt-2">
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-150">
+              <span class="text-gray-400 block uppercase">Résistance Thermique Type</span>
+              <strong class="text-secondary text-sm block mt-1">{tech.rValue}</strong>
+            </div>
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-150">
+              <span class="text-gray-400 block uppercase">Prix moyen indicatif posé</span>
+              <strong class="text-secondary text-sm block mt-1">{tech.priceRange}</strong>
+            </div>
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-150">
+              <span class="text-gray-400 block uppercase">Finitions esthétiques</span>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                {tech.finishingOptions.map(f => (
+                  <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded text-[9px] font-bold border border-teal-200/50">{f}</span>
+                ))}
+              </div>
+            </div>
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-150">
+              <span class="text-gray-400 block uppercase">Durabilité théorique</span>
+              <strong class="text-secondary text-sm block mt-1">{tech.lifespan}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pros and Cons -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-green-50/50 border border-green-200/80 rounded-3xl p-6 shadow-sm space-y-3">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm flex items-center gap-1.5 text-green-800">
+              <span>🟢</span> Points Forts
+            </h4>
+            <ul class="space-y-2.5 text-xs text-gray-700">
+              {tech.pros.map(pro => (
+                <li class="flex items-start gap-2">
+                  <span class="text-green-600 font-bold mt-0.5">✓</span>
+                  <span>{pro}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="bg-red-50/50 border border-red-200/80 rounded-3xl p-6 shadow-sm space-y-3">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm flex items-center gap-1.5 text-red-800">
+              <span>🔴</span> Points Faibles
+            </h4>
+            <ul class="space-y-2.5 text-xs text-gray-700">
+              {tech.cons.map(con => (
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 font-bold mt-0.5">✗</span>
+                  <span>{con}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Quote and directory -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="sticky top-20 space-y-6">
+          <QuoteWidget keyword={`Technique ITE ${tech.shortName}`} />
+
+          <!-- All techniques link -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">⚙️ Autres techniques ITE</h4>
+            <ul class="space-y-2">
+              {techniques.map(t => (
+                <li>
+                  <a 
+                    href={`/techniques/${t.slug}`}
+                    class={`text-xs transition-colors block py-0.5 ${t.slug === tech.slug ? 'text-secondary font-bold' : 'text-gray-600 hover:text-secondary'}`}
+                  >
+                    • {t.shortName} ({t.emoji})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>

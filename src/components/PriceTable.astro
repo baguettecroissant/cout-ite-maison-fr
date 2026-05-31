@@ -1,0 +1,63 @@
+---
+import { siteConfig } from '../../site.config';
+---
+
+<section class="bg-white rounded-3xl shadow-sm border border-gray-200/80 p-6 md:p-8 animate-fade-up">
+  <h3 class="font-bitter font-bold text-xl text-gray-900 mb-2">
+    💰 Coût de l'ITE au m² en 2026
+  </h3>
+  <p class="text-xs text-gray-500 mb-6 font-light">{siteConfig.pricingNote}</p>
+
+  <!-- Mobile Cards -->
+  <div class="md:hidden space-y-4">
+    {siteConfig.pricing.map((row) => (
+      <div class="bg-gray-50 rounded-2xl p-4.5 border border-gray-150 shadow-inner">
+        <h4 class="font-bitter font-bold text-gray-900 text-sm mb-1">{row.service}</h4>
+        <p class="text-secondary font-bold text-lg font-space mt-1">{row.price}</p>
+        <p class="text-xs text-gray-500 mt-2 font-light">{row.details}</p>
+      </div>
+    ))}
+  </div>
+
+  <!-- Desktop Table -->
+  <div class="hidden md:block overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-xs text-gray-500 border-b border-gray-200">
+          <th class="px-4 py-3 text-left font-bold font-space uppercase tracking-wider rounded-tl-xl">Prestation</th>
+          <th class="px-4 py-3 text-left font-bold font-space uppercase tracking-wider">Prix au m² (Pose Incluse)</th>
+          <th class="px-4 py-3 text-left font-bold font-space uppercase tracking-wider rounded-tr-xl">Détails techniques & Finitions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-150 text-sm">
+        {siteConfig.pricing.map((row) => (
+          <tr class="hover:bg-gray-50/50 transition-colors">
+            <td class="px-4 py-4 font-bold text-gray-900">{row.service}</td>
+            <td class="px-4 py-4 font-bold text-secondary font-space whitespace-nowrap text-base">{row.price}</td>
+            <td class="px-4 py-4 text-gray-600 font-light leading-relaxed">{row.details}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Aides Section -->
+{siteConfig.aids && (
+  <section class="bg-[#F1F5F9] rounded-3xl border border-gray-200 p-6 md:p-8 mt-6">
+    <h3 class="font-bitter font-bold text-xl text-gray-900 mb-6 flex items-center gap-2">
+      <span>🏛️</span> Subventions et Aides Financières ITE 2026
+    </h3>
+    <div class="grid sm:grid-cols-2 gap-4">
+      {siteConfig.aids.map((aid) => (
+        <div class="bg-white rounded-2xl p-4.5 border border-gray-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h4 class="font-bitter font-bold text-gray-900 text-sm">{aid.name}</h4>
+            <p class="text-accent-500 font-bold text-lg font-space mt-1.5">{aid.amount}</p>
+          </div>
+          <p class="text-[11px] text-gray-500 mt-2 font-light border-t border-gray-100 pt-2">{aid.condition}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+)}

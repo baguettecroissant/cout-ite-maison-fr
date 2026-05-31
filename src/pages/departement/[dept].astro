@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuoteWidget from '../../components/QuoteWidget.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { siteConfig } from '../../../site.config';
+import { getAllDepartments, getCitiesByDepartment } from '../../lib/cities';
+
+export function getStaticPaths() {
+  const departments = getAllDepartments();
+  return departments.map(dept => ({
+    params: { dept: dept.code.toLowerCase() },
+    props: { dept },
+  }));
+}
+
+const { dept } = Astro.props;
+const cities = getCitiesByDepartment(dept.code);
+const allDepartments = getAllDepartments();
+
+// Nearby departments (same region)
+const nearbyDepts = allDepartments
+  .filter(d => d.region === dept.region && d.code !== dept.code)
+  .slice(0, 6);
+
+// Climate zone
+const zone = dept.region.includes('Hauts-de-France') || dept.region.includes('Grand Est') || dept.region.includes('Bourgogne') ? 'H1' :
+             dept.region.includes('PACA') || dept.region.includes('Corse') || dept.region.includes('Occitanie') ? 'H3' : 'H2';
+
+const title = `Isolation Extérieure (ITE) ${dept.name} (${dept.code}) — Prix & Devis RGE 2026`;
+const description = `Comparez les prix au m² d'isolation thermique par l'extérieur (ITE) dans le ${dept.name} (${dept.code}). ${cities.length} villes couvertes. Devis gratuits d'installateurs RGE en ${dept.region}.`;
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Isolation Thermique par l'Extérieur - ${dept.name}`,
+    "description": description,
+    "url": `https://www.${siteConfig.domain}/departement/${dept.code.toLowerCase()}`,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `https://www.${siteConfig.domain}` },
+      { "@type": "ListItem", "position": 2, "name": "Annuaire", "item": `https://www.${siteConfig.domain}/annuaire` },
+      { "@type": "ListItem", "position": 3, "name": dept.name },
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`/departement/${dept.code.toLowerCase()}`}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="gradient-hero text-white py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumbs items={[
+        { label: "Annuaire", href: "/annuaire" },
+        { label: dept.name, href: `/departement/${dept.code.toLowerCase()}` },
+      ]} />
+
+      <div class="grid lg:grid-cols-5 gap-10 items-start mt-6">
+        <div class="lg:col-span-3 space-y-6">
+          <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 rounded-full text-sm">
+            <span>📍</span>
+            <span>Région {dept.region}</span>
+          </div>
+
+          <h1 class="text-3xl md:text-5xl font-bitter font-extrabold leading-tight text-white">
+            Isolation Extérieure (ITE) en {dept.name} ({dept.code})
+          </h1>
+
+          <p class="text-gray-200 leading-relaxed text-lg font-light">
+            Trouvez un façadier qualifié RGE spécialisé en isolation thermique par l'extérieur dans le département du {dept.name}.
+            <strong class="text-white font-semibold">{cities.length} villes couvertes</strong> pour des simulations gratuites.
+          </p>
+
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-white/10 backdrop-blur-sm border border-white/20 px-3.5 py-2 rounded-xl text-sm font-semibold">
+              ✓ {cities.length} villes partenaires
+            </span>
+            <span class="bg-white/10 backdrop-blur-sm border border-white/20 px-3.5 py-2 rounded-xl text-sm font-semibold">
+              ✓ Zone climatique {zone}
+            </span>
+            <span class="bg-white/10 backdrop-blur-sm border border-white/20 px-3.5 py-2 rounded-xl text-sm font-semibold">
+              ✓ Artisans RGE locaux
+            </span>
+          </div>
+
+          <a href="#devis-form" class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-7 py-4 rounded-xl transition-all shadow-lg transform hover:scale-[1.02]">
+            🏠 Demander mes Devis dans le {dept.name}
+          </a>
+        </div>
+
+        <div class="lg:col-span-2" id="devis-form">
+          <div class="sticky top-20">
+            <QuoteWidget keyword={`${siteConfig.niche.nameShort} ${dept.name}`} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+    <!-- Local Info -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl font-bitter font-bold text-gray-900 mb-4">
+        🏠 Spécificités de l'Isolation Extérieure dans le {dept.name}
+      </h2>
+      <div class="prose max-w-none text-gray-600 space-y-4">
+        <p>
+          Le département du <strong>{dept.name}</strong> ({dept.code}), situé en région <strong>{dept.region}</strong>,
+          est classé en <strong>zone climatique {zone}</strong> pour le calcul des primes de rénovation énergétique.
+          {zone === 'H1' ? " Les hivers y étant rigoureux, l'isolation par l'extérieur (ITE) y est particulièrement recommandée pour éliminer la totalité des parois froides et réaliser jusqu'à 30% d'économies sur votre facture de gaz ou d'électricité." :
+           zone === 'H3' ? " Le climat ensoleillé méditerranéen y exige une excellente protection contre la chaleur estivale. L'ITE combinée à un isolant à fort déphasage (comme la laine de roche ou la fibre de bois) maintient les pièces fraîches sans surconsommer de climatisation." :
+           " Le climat tempéré offre un excellent équilibre de confort thermique annuel. L'ITE sous enduit polystyrène (PSE) de 14 cm permet d'atteindre facilement une haute résistance R=3.7 requise pour décrocher les aides."}
+        </p>
+        <p>
+          Nos <strong>{cities.length} villes couvertes</strong> dans le {dept.name} vous garantissent l'accès rapide à des
+          façadiers RGE certifiés du secteur. Passer par un artisan local réduit considérablement les frais d'échafaudage et assure un service après-vente d'une grande réactivité.
+        </p>
+      </div>
+    </section>
+
+    <!-- Price Range -->
+    <section class="bg-gradient-to-br from-secondary/5 to-teal-50/20 rounded-2xl border border-secondary/20 p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl font-bitter font-bold text-gray-900 mb-4">
+        💰 Quel est le prix d'une ITE m² dans le {dept.name} ?
+      </h2>
+      <div class="grid sm:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-4 text-center border border-teal-100 shadow-sm">
+          <span class="block text-sm text-gray-500 mb-1">Entrée de gamme</span>
+          <span class="block text-2xl font-bitter font-extrabold text-secondary font-mono">100€ – 130€</span>
+          <span class="block text-xs text-gray-400 mt-1">Enduit mince sur PSE</span>
+        </div>
+        <div class="bg-white rounded-xl p-4 text-center border border-accent-500/20 ring-2 ring-accent-500/10 shadow-md">
+          <span class="block text-sm text-accent-600 font-bold mb-1">Le plus courant</span>
+          <span class="block text-2xl font-bitter font-extrabold text-secondary font-mono">120€ – 160€</span>
+          <span class="block text-xs text-gray-400 mt-1">Laine de roche sous enduit</span>
+        </div>
+        <div class="bg-white rounded-xl p-4 text-center border border-teal-100 shadow-sm">
+          <span class="block text-sm text-gray-500 mb-1">Finition bardage</span>
+          <span class="block text-2xl font-bitter font-extrabold text-secondary font-mono">150€ – 230€</span>
+          <span class="block text-xs text-gray-400 mt-1">Bois ou Composite ventilé</span>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Ces tarifs moyens au m² TTC incluent la main d'œuvre, la fourniture des isolants thermiques, la mise en place de l'échafaudage de sécurité et les assurances obligatoires. Après déduction de MaPrimeRénov' 2026 et de la prime énergie CEE, le reste à charge moyen dans le {dept.name} oscille généralement entre 
+        <strong>35% et 60%</strong> du montant initial du devis.
+      </p>
+    </section>
+
+    <!-- Cities Grid -->
+    <section class="space-y-6">
+      <div>
+        <h2 class="text-2xl font-bitter font-bold text-gray-900">
+          🏙️ Toutes les villes couvertes du {dept.name} ({dept.code})
+        </h2>
+        <p class="text-gray-500 text-sm mt-1">
+          Sélectionnez votre commune pour accéder instantanément aux aides locales et demander votre devis gratuit :
+        </p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+        {cities.map((city) => (
+          <a
+            href={`/${city.slug}`}
+            class="bg-white border border-gray-200 rounded-xl px-4 py-3.5 hover:border-secondary hover:shadow-md transition-all group text-center"
+          >
+            <span class="font-bitter font-bold text-gray-900 group-hover:text-secondary text-sm block">{city.name}</span>
+            <span class="text-xs text-gray-400 font-space block mt-1">{city.zip}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Nearby Departments -->
+    {nearbyDepts.length > 0 && (
+      <section class="space-y-6">
+        <h2 class="text-xl font-bitter font-bold text-gray-900">
+          🗺️ Départements voisins en {dept.region}
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {nearbyDepts.map((nd) => (
+            <a
+              href={`/departement/${nd.code.toLowerCase()}`}
+              class="bg-white border border-gray-200 rounded-2xl px-5 py-4.5 hover:border-secondary hover:shadow-md transition-all group"
+            >
+              <span class="font-bitter font-bold text-gray-900 group-hover:text-secondary text-sm block">{nd.name} ({nd.code})</span>
+              <span class="text-xs text-gray-400 font-space block mt-1">{nd.count} communes • Région {nd.region}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- CTA -->
+    <section class="pb-20 md:pb-0">
+      <div class="bg-slate-900 rounded-3xl p-8 text-center text-white">
+        <h2 class="text-2xl font-bitter font-bold mb-3 text-teal-400">
+          Simulez votre reste à charge ITE en 2 minutes
+        </h2>
+        <p class="text-slate-300 mb-6 max-w-xl mx-auto text-sm">
+          Gratuit • 100% sans engagement • Artisans qualifiés RGE en {dept.name} ({dept.code}).
+        </p>
+        <a href="#devis-form" class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-lg transform active:scale-95">
+          Demander mes 3 Devis →
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

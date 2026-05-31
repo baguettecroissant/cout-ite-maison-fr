@@ -1,0 +1,100 @@
+---
+// BeforeAfterSlider.astro — Interactive facade slider
+---
+
+<div class="relative w-full aspect-[4/3] before-after-slider select-none overflow-hidden rounded-2xl shadow-xl border border-gray-200/80 group" style="--clip-pos: 50%;">
+  <!-- Renovated Façade (After) - Base layer -->
+  <div class="absolute inset-0 w-full h-full bg-[#1E293B]">
+    <img 
+      src="/images/hero.webp" 
+      alt="Maison moderne après travaux ITE (façade propre, DPE B)" 
+      class="w-full h-full object-cover transition duration-300"
+    />
+  </div>
+  
+  <!-- Old Façade (Before) - Overlaid and clipped -->
+  <!-- We apply an overlay color to make it look old, dark, and deteriorated if it's the same image, but if it is an exact before/after photograph it is even better -->
+  <div class="absolute inset-0 w-full h-full overflow-hidden before-layer" style="clip-path: inset(0 var(--clip-pos) 0 0);">
+    <img 
+      src="/images/hero.webp" 
+      alt="Maison passoire énergétique avant travaux ITE (DPE G)" 
+      class="absolute inset-0 w-full h-full object-cover filter sepia-[0.3] brightness-[0.75] contrast-[1.1] saturate-[0.8]"
+    />
+    <!-- Cracks overlay effect -->
+    <div class="absolute inset-0 bg-gradient-to-tr from-black/25 via-transparent to-black/20 mix-blend-overlay"></div>
+  </div>
+  
+  <!-- Draggable handle -->
+  <div class="absolute top-0 bottom-0 w-[4px] bg-white cursor-ew-resize z-20 flex items-center justify-center transition-shadow group-hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.5)]" style="left: calc(100% - var(--clip-pos));">
+    <div class="absolute w-10 h-10 bg-accent-500 hover:bg-accent-600 border-[3px] border-white rounded-full flex items-center justify-between px-2.5 shadow-2xl text-white font-extrabold select-none pointer-events-none transform -translate-x-1/2">
+      <span class="text-xs">&lt;</span>
+      <span class="text-xs">&gt;</span>
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div class="absolute bottom-4 left-4 bg-red-600/90 backdrop-blur-md text-white text-xs font-bold font-space uppercase px-3 py-1.5 rounded-lg border border-red-500/30 shadow-md z-20 tracking-wider">
+    🔴 Avant (DPE G)
+  </div>
+  <div class="absolute bottom-4 right-4 bg-dpe-b/95 backdrop-blur-md text-white text-xs font-bold font-space uppercase px-3 py-1.5 rounded-lg border border-green-600/30 shadow-md z-20 tracking-wider">
+    🟢 Après ITE (DPE B)
+  </div>
+
+  <!-- Interactive Range Input Overlay -->
+  <input 
+    type="range" 
+    min="0" 
+    max="100" 
+    value="50" 
+    class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30" 
+    id="slider-range-control"
+    aria-label="Contrôle avant après isolation extérieure"
+  />
+</div>
+
+<script is:inline>
+(function() {
+  // Select the control element just created
+  const rangeInputs = document.querySelectorAll('#slider-range-control');
+  rangeInputs.forEach(input => {
+    const slider = input.closest('.before-after-slider');
+    if (!slider) return;
+    
+    const updateSlider = (val) => {
+      // Inset from right represents percentage of the After image covered
+      // val = 0 -> clip-pos = 100% (only After is shown)
+      // val = 100 -> clip-pos = 0% (only Before is shown)
+      slider.style.setProperty('--clip-pos', (100 - val) + '%');
+    };
+
+    input.addEventListener('input', (e) => updateSlider(e.target.value));
+    input.addEventListener('change', (e) => updateSlider(e.target.value));
+    
+    // Initialize
+    updateSlider(input.value);
+  });
+})();
+</script>
+
+<style>
+/* Custom styled range input inside the container */
+#slider-range-control {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+#slider-range-control::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 40px;
+  height: 100%;
+  cursor: ew-resize;
+}
+#slider-range-control::-moz-range-thumb {
+  width: 40px;
+  height: 100%;
+  cursor: ew-resize;
+  background: transparent;
+  border: none;
+}
+</style>

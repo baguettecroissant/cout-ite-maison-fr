@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteWidget from '../components/QuoteWidget.astro';
+import PriceTable from '../components/PriceTable.astro';
+import DpeBar from '../components/DpeBar.astro';
+import BeforeAfterSlider from '../components/BeforeAfterSlider.astro';
+import { siteConfig } from '../../site.config';
+import { getAllCities, getAllDepartments } from '../lib/cities';
+import { blogArticles } from '../data/blog-articles';
+import { brands } from '../data/brands';
+import { techniques } from '../data/techniques';
+
+const topCities = getAllCities().slice(0, 15);
+const departments = getAllDepartments().slice(0, 15);
+const topArticles = blogArticles.slice(0, 3);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteConfig.name,
+    "url": `https://www.${siteConfig.domain}`,
+    "description": siteConfig.description,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `https://www.${siteConfig.domain}/{search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": siteConfig.faq.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  }
+];
+---
+
+<BaseLayout
+  title={`${siteConfig.name} | ${siteConfig.baseline}`}
+  description={siteConfig.description}
+  canonical="/"
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section (Split Screen) -->
+  <section class="gradient-hero text-white py-16 lg:py-24 relative overflow-hidden">
+    <!-- Subtle facade pattern background -->
+    <div class="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <!-- Left text column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 bg-accent-500 text-white font-space text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full animate-pulse-light shadow-lg">
+            🏠 Jusqu'à 75€/m² d'aides MaPrimeRénov' 2026
+          </div>
+          
+          <h1 class="text-4xl md:text-6xl font-bitter font-extrabold leading-tight text-white">
+            Isolation Extérieure (ITE) : <br/>
+            <span class="text-teal-400">Prix au m², Aides & Devis</span>
+          </h1>
+          
+          <p class="text-lg text-gray-200 leading-relaxed font-light max-w-2xl">
+            {siteConfig.niche.heroSubtitle}
+          </p>
+
+          <!-- Badges trust list -->
+          <div class="flex flex-wrap gap-2.5 pt-2">
+            {siteConfig.trustBadges.map((badge) => (
+              <span class="bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 rounded-xl text-sm font-semibold text-gray-100 shadow-inner">
+                ✓ {badge}
+              </span>
+            ))}
+          </div>
+
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a href="#devis-form" class="bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-xl font-bold text-base transition-all shadow-xl transform hover:scale-[1.02]">
+              🏠 Devis ITE Gratuit
+            </a>
+            <a href="#comparateur-prix" class="bg-white/10 hover:bg-white/20 border border-white/25 text-white px-7 py-4 rounded-xl font-bold text-base transition-all">
+              Comparer les Techniques
+            </a>
+          </div>
+          
+          <p class="text-xs text-gray-400 font-space italic pt-2">
+            📊 2 347 façades rénovées & isolées par nos artisans certifiés.
+          </p>
+        </div>
+
+        <!-- Right image slider column -->
+        <div class="lg:col-span-5 w-full">
+          <BeforeAfterSlider />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section DPE Gain Indicators -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <DpeBar beforeClass="G" afterClass="B" savingsAmount="1 200€" />
+  </section>
+
+  <!-- Section: Intro text & Brand systems -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl md:text-3xl font-bitter font-bold text-gray-900 mb-6">
+        Qu'est-ce que l'Isolation Thermique par l'Extérieur (ITE) ?
+      </h2>
+      <div class="text-gray-600 leading-relaxed space-y-4">
+        {siteConfig.introText.split('\n\n').map((paragraph) => (
+          <p set:html={paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')} />
+        ))}
+      </div>
+    </div>
+
+    <!-- Right: Quick why choose us -->
+    <div class="bg-gradient-to-br from-secondary/5 to-teal-50/20 border border-secondary/20 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+      <div>
+        <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">⭐ LE SAVIEZ-VOUS ?</span>
+        <h3 class="font-bitter font-bold text-xl text-gray-900 mb-4">Pourquoi passer par nous ?</h3>
+        <ul class="space-y-4">
+          {siteConfig.whyChooseUs.map((item) => (
+            <li class="flex items-start gap-2.5">
+              <span class="text-secondary font-bold mt-0.5">✓</span>
+              <span class="text-sm text-gray-700 font-medium leading-normal">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="pt-6 border-t border-gray-200/50 mt-6">
+        <a href="#devis-form" class="text-secondary hover:underline text-sm font-bold font-space flex items-center gap-1">
+          Lancer une simulation d'aides →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Techniques grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8" id="comparateur-prix">
+    <div class="max-w-3xl">
+      <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">⚙️ SYSTÈMES & SOLUITIONS</span>
+      <h2 class="text-2xl md:text-4xl font-bitter font-bold text-gray-900">
+        Les 4 Techniques Majeures de Pose d'ITE
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Découvrez les fiches techniques, résistances thermiques (R) et tarifs indicatifs pour isoler vos murs.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {techniques.map((t) => (
+        <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="space-y-3">
+            <span class="text-3xl block">{t.emoji}</span>
+            <h3 class="font-bitter font-bold text-base text-gray-900 leading-tight">{t.shortName}</h3>
+            <p class="text-xs text-gray-500 font-space">{t.priceRange} TTC posé</p>
+            <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">{t.summary}</p>
+          </div>
+          <div class="pt-4 mt-4 border-t border-gray-100">
+            <a href={`/techniques/${t.slug}`} class="text-secondary hover:text-secondary-dark text-xs font-bold font-space">
+              Fiche technique →
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section: Quote Widget Form -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="devis-form">
+    <div class="grid lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <h2 class="text-2xl md:text-4xl font-bitter font-bold text-gray-900">
+          Comparez 3 Devis d'Artisans RGE Qualifiés
+        </h2>
+        <p class="text-gray-600 leading-relaxed">
+          Ne signez rien sans avoir comparé ! Les prix de l'isolation par l'extérieur (ITE) peuvent varier de plus de 30% d'un façadier à un autre. Notre comparateur gratuit vous met en relation avec des poseurs agréés et qualifiés RGE de votre département.
+        </p>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-gray-150 text-center">
+            <span class="text-2xl block mb-1">⏱️</span>
+            <span class="text-xs text-gray-500 block">Formulaire</span>
+            <span class="text-sm font-bold text-gray-900 block font-space">En 2 minutes</span>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-gray-150 text-center">
+            <span class="text-2xl block mb-1">⚡</span>
+            <span class="text-xs text-gray-500 block">Mise en relation</span>
+            <span class="text-sm font-bold text-gray-900 block font-space">Sous 48h</span>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-gray-150 text-center">
+            <span class="text-2xl block mb-1">🛡️</span>
+            <span class="text-xs text-gray-500 block">Engagement</span>
+            <span class="text-sm font-bold text-gray-900 block font-space">100% Gratuit</span>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <QuoteWidget keyword="Isolation extérieure ITE" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Price Table details -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+    <div class="max-w-3xl">
+      <h2 class="text-2xl md:text-3xl font-bitter font-bold text-gray-900">
+        💰 Grille de Prix ITE : Coûts Détaillés & Annexes 2026
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Les tarifs au m² indiqués s'appliquent pour l'installation d'isolants conformes à la réglementation (R ≥ 3.7).
+      </p>
+    </div>
+    <PriceTable />
+  </section>
+
+  <!-- Section: Certified Brands systems -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-gray-50 rounded-3xl border border-gray-200/50 p-6 md:p-8">
+    <div class="max-w-3xl">
+      <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">🏭 FABRICANTS OFFICIELS</span>
+      <h2 class="text-2xl md:text-4xl font-bitter font-bold text-gray-900">
+        Les 6 Marques de Référence de l'ITE
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Les fabricants conçoivent des systèmes complets (colles, isolants, enduits) certifiés par le CSTB.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {brands.map((b) => (
+        <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bitter font-bold text-base text-gray-900">{b.name}</h3>
+              <span class="text-xs text-gray-500">{b.origin}</span>
+            </div>
+            <p class="text-[11px] text-teal-700 font-bold font-space">{b.phareSystem} • {b.priceRange}</p>
+            <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">{b.description}</p>
+          </div>
+          <div class="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+            <span class="text-amber-500 font-bold">⭐ {b.starRating}/5</span>
+            <a href={`/systemes/${b.slug}`} class="text-secondary hover:text-secondary-dark font-bold font-space">
+              Avis & Gamme →
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section: Blog articles guides -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+    <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
+      <div class="max-w-3xl">
+        <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">📚 CONSEILS D'EXPERTS</span>
+        <h2 class="text-2xl md:text-4xl font-bitter font-bold text-gray-900">
+          Guides & Articles de Référence
+        </h2>
+        <p class="text-gray-500 text-sm mt-2">
+          Tout comprendre sur l'isolation extérieure : diagnostics, pièges, subventions et astuces de chantier.
+        </p>
+      </div>
+      <a href="/guides" class="text-secondary hover:underline text-sm font-bold font-space shrink-0">
+        Tous les guides →
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      {topArticles.map((a) => (
+        <a href={`/guides/${a.slug}`} class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group h-full">
+          <div class="aspect-[16/10] bg-gray-100 relative">
+            <span class="absolute top-3 left-3 bg-white text-base w-8 h-8 rounded-full flex items-center justify-center shadow-md">{a.emoji}</span>
+            <div class="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500 text-xs font-space font-bold border-b border-gray-200">
+              [Image: {a.title.split(' ')[0]} {a.title.split(' ')[1]}]
+            </div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+            <div class="space-y-1.5">
+              <span class="text-[10px] text-teal-700 font-bold font-space uppercase tracking-wider">{a.category}</span>
+              <h3 class="font-bitter font-bold text-base text-gray-900 group-hover:text-secondary transition-colors leading-tight">
+                {a.title}
+              </h3>
+              <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                {a.excerpt}
+              </p>
+            </div>
+            <span class="text-[10px] text-gray-400 font-space block">{a.date} • {a.readTime}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section: City dynamic indexes -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-slate-900 rounded-3xl text-white">
+    <div class="grid lg:grid-cols-3 gap-8 items-start p-6 md:p-8">
+      <div class="space-y-4">
+        <h2 class="text-2xl md:text-3xl font-bitter font-bold">
+          📍 Trouver un façadier ITE RGE près de chez vous
+        </h2>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Nous couvrons plus de 5 000 communes en France métropolitaine. Accédez instantanément au simulateur d'aides locales, au prix moyen au m² posé et à l'annuaire des professionnels certifiés de votre région.
+        </p>
+        <a href="/annuaire" class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md text-sm">
+          Départements et Communes →
+        </a>
+      </div>
+      
+      <!-- Top Towns links -->
+      <div class="space-y-3">
+        <h3 class="font-bitter font-bold text-lg border-b border-slate-800 pb-2 text-teal-400">🏙️ Top Villes</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          {topCities.map((city) => (
+            <a href={`/${city.slug}`} class="text-slate-300 hover:text-white transition-colors py-0.5">
+              • ITE {city.name} ({city.zip})
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Top Departments links -->
+      <div class="space-y-3">
+        <h3 class="font-bitter font-bold text-lg border-b border-slate-800 pb-2 text-teal-400">🗺️ Départements</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          {departments.map((dept) => (
+            <a href={`/departement/${dept.code.toLowerCase()}`} class="text-slate-300 hover:text-white transition-colors py-0.5">
+              • ITE {dept.name} ({dept.code})
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

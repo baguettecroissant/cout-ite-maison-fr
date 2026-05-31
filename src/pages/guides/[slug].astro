@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuoteWidget from '../../components/QuoteWidget.astro';
+import { siteConfig } from '../../../site.config';
+import { blogArticles, type BlogArticle } from '../../data/blog-articles';
+
+export function getStaticPaths() {
+  return blogArticles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props as { article: BlogArticle };
+
+// Related articles (exclude current)
+const relatedArticles = blogArticles.filter(a => a.slug !== article.slug).slice(0, 3);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": article.title,
+    "description": article.metaDescription,
+    "datePublished": article.date,
+    "dateModified": article.date,
+    "author": {
+      "@type": "Organization",
+      "name": siteConfig.name,
+      "url": `https://www.${siteConfig.domain}`,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": siteConfig.name,
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.${siteConfig.domain}/guides/${article.slug}`,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `https://www.${siteConfig.domain}` },
+      { "@type": "ListItem", "position": 2, "name": "Guides ITE", "item": `https://www.${siteConfig.domain}/guides` },
+      { "@type": "ListItem", "position": 3, "name": article.title },
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={article.metaTitle}
+  description={article.metaDescription}
+  canonical={`/guides/${article.slug}`}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <!-- Article Hero -->
+  <section class="gradient-hero text-white py-12 md:py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <!-- Breadcrumbs -->
+      <nav class="text-xs text-gray-400 font-space flex items-center gap-1.5">
+        <a href="/" class="hover:text-white transition-colors">Accueil</a>
+        <span>›</span>
+        <a href="/guides" class="hover:text-white transition-colors">Guides ITE</a>
+        <span>›</span>
+        <span class="text-gray-300 line-clamp-1">{article.title}</span>
+      </nav>
+
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 rounded-full text-xs font-bold font-space uppercase tracking-wider text-teal-300">
+        <span>{article.emoji}</span>
+        <span>{article.category}</span>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl font-bitter font-extrabold leading-tight text-white max-w-4xl">
+        {article.title}
+      </h1>
+
+      <div class="flex items-center gap-4 text-xs text-gray-300 font-space pt-2">
+        <span>📅 Publié le : {new Date(article.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        <span>⏱️ {article.readTime} de lecture</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <!-- Main Content -->
+      <article class="lg:col-span-8 space-y-8">
+        
+        <!-- Summary Box -->
+        <div class="bg-secondary-light/20 border-l-4 border-secondary rounded-r-2xl p-5 md:p-6 shadow-inner">
+          <h2 class="text-xs font-bold text-secondary uppercase tracking-wider font-space mb-2">🎯 Résumé rapide de l'expert</h2>
+          <p class="text-gray-800 text-sm leading-relaxed font-medium">{article.excerpt}</p>
+        </div>
+
+        <!-- Article Body -->
+        <div class="prose prose-lg max-w-none text-gray-700
+          prose-headings:font-bitter prose-headings:text-gray-900 prose-headings:font-bold
+          prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-2
+          prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+          prose-p:mb-4 prose-p:leading-relaxed prose-p:text-sm md:prose-p:text-base
+          prose-li:mb-1.5 prose-li:text-sm md:prose-li:text-base
+          prose-table:text-sm prose-table:my-6
+          prose-th:bg-gray-100 prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-bold prose-th:text-gray-800 prose-th:border-b prose-th:border-gray-200
+          prose-td:px-4 prose-td:py-3 prose-td:border-b prose-td:border-gray-150
+          prose-strong:text-gray-950 prose-strong:font-bold
+          prose-a:text-secondary prose-a:font-semibold prose-a:underline hover:prose-a:text-secondary-dark
+        " set:html={article.content} />
+
+        <!-- CTA Box -->
+        <div class="bg-slate-900 rounded-3xl p-6 md:p-8 text-center text-white space-y-4 shadow-lg">
+          <h3 class="font-bitter font-bold text-xl text-teal-400">
+            Prêt à évaluer le coût pour votre logement ?
+          </h3>
+          <p class="text-slate-300 text-sm max-w-lg mx-auto">
+            Comparez gratuitement les offres de 3 installateurs qualifiés RGE de votre département. Service sans aucun engagement.
+          </p>
+          <a href="#devis-form" class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md transform hover:scale-[1.02] active:scale-95">
+            🏠 Obtenir mes Devis Gratuits
+          </a>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="pt-8 border-t border-gray-200 mt-12 space-y-6">
+          <h3 class="font-bitter font-bold text-xl text-gray-900">📚 Guides ITE recommandés</h3>
+          <div class="grid sm:grid-cols-3 gap-5">
+            {relatedArticles.map(ra => (
+              <a href={`/guides/${ra.slug}`} class="bg-white border border-gray-200 rounded-2xl p-4.5 hover:border-secondary hover:shadow-md transition-all group flex flex-col justify-between h-full">
+                <div class="space-y-2">
+                  <span class="text-2xl block mb-2">{ra.emoji}</span>
+                  <span class="text-[9px] font-bold text-teal-700 font-space uppercase tracking-wider block">{ra.category}</span>
+                  <h4 class="font-bitter font-bold text-gray-900 group-hover:text-secondary text-sm leading-snug">{ra.title}</h4>
+                </div>
+                <span class="text-[10px] text-gray-400 font-space block mt-4">{ra.readTime} de lecture</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 space-y-6">
+        <div class="sticky top-20 space-y-6" id="devis-form">
+          <QuoteWidget keyword={`Guide ITE ${article.slug}`} />
+
+          <!-- Dynamic Annuaire Cities -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">📍 Façadiers par Ville</h4>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              {['paris', 'lyon', 'marseille', 'bordeaux', 'toulouse', 'nantes', 'lille', 'nice'].map(city => (
+                <a href={`/${city}`} class="text-secondary hover:underline capitalize py-0.5 font-medium">
+                  • ITE {city}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- All Guides Directory -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">📚 Table des Guides ITE</h4>
+            <ul class="space-y-2">
+              {blogArticles.map(a => (
+                <li>
+                  <a href={`/guides/${a.slug}`}
+                    class={`text-xs transition-colors block py-0.5 leading-relaxed ${a.slug === article.slug ? 'text-secondary font-bold' : 'text-gray-600 hover:text-secondary'}`}>
+                    {a.emoji} {a.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

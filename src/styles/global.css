@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* === Custom Design Tokens (Tailwind v4) === */
+@theme {
+  --color-primary: #475569;          /* Gris ardoise */
+  --color-primary-light: #F1F5F9;    /* Gris très clair */
+  --color-primary-dark: #334155;     /* Gris foncé */
+  --color-secondary: #0F766E;        /* Teal profond */
+  --color-secondary-light: #CCFBF1;  /* Teal très clair */
+  --color-accent-500: #EA580C;       /* Orange brûlé CTA */
+  --color-accent-600: #C2410C;       /* Orange foncé hover */
+  --color-dark: #0F172A;             /* Bleu-gris sombre */
+  --color-dpe-a: #319834;
+  --color-dpe-b: #33CC33;
+  --color-dpe-c: #CCFF33;
+  --color-dpe-d: #FFFF00;
+  --color-dpe-e: #FFCC00;
+  --color-dpe-f: #FF6600;
+  --color-dpe-g: #FF0000;
+
+  --font-bitter: 'Bitter', serif;
+  --font-nunito: 'Nunito Sans', sans-serif;
+  --font-space: 'Space Mono', monospace;
+}
+
+/* === Global Styles === */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-nunito);
+  -webkit-font-smoothing: antialiased;
+  color: #0f172a;
+  background-color: #FAFAF9; /* Blanc cassé pierre */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bitter);
+  font-weight: 700;
+}
+
+.data-font {
+  font-family: var(--font-space);
+}
+
+/* === Gradients === */
+.gradient-hero {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(71, 85, 105, 0.8) 100%);
+}
+
+.eco-gradient {
+  background: linear-gradient(135deg, #0F766E, #059669);
+}
+
+.cta-gradient {
+  background: linear-gradient(135deg, #EA580C, #C2410C);
+}
+
+/* === Before/After Reveal === */
+.before-after-container {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+/* === Micro-animations === */
+@keyframes dpe-slide {
+  from { width: 0; }
+  to { width: var(--dpe-target); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pulse badge */
+@keyframes pulse-light {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.4); }
+  50% { transform: scale(1.03); box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); }
+}
+.animate-pulse-light {
+  animation: pulse-light 2s infinite;
+}
+
+/* === ViteUnDevis Widget Styling Override === */
+.vud-widget-container iframe {
+  width: 100% !important;
+  min-height: 420px;
+  border: none;
+  background: transparent;
+}
+
+/* Fix: CSS reset clashes */
+.vud-widget {
+  all: initial;
+  display: block;
+  width: 100%;
+  min-height: 420px;
+  font-family: var(--font-nunito);
+}
+
+.vud-widget * {
+  all: revert;
+  box-sizing: border-box;
+}
+
+/* === FAQ Accordion styling === */
+details summary {
+  cursor: pointer;
+  list-style: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+details[open] summary .faq-chevron {
+  transform: rotate(180deg);
+}
+.faq-chevron {
+  transition: transform 0.25s ease;
+}

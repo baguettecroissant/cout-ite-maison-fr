@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteWidget from '../components/QuoteWidget.astro';
+import PriceTable from '../components/PriceTable.astro';
+import DpeBar from '../components/DpeBar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteConfig } from '../../site.config';
+import { getAllCities, getNearbyCities } from '../lib/cities';
+import localContentRaw from '../data/local-content.json';
+
+// Local content typing matches the 8 blocks generated
+const localContent = localContentRaw as Record<string, {
+  intro_climatique: string;
+  parc_immobilier: string;
+  technique_recommandee: string;
+  calcul_economies: string;
+  aides_locales: string;
+  artisans_locaux: string;
+  faq_locale: { q: string; a: string }[];
+  exemple_chiffre: string;
+}>;
+
+export function getStaticPaths() {
+  const allCities = getAllCities();
+  return allCities.map(city => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+const { city } = Astro.props;
+const nearbyCities = getNearbyCities(city, 8);
+const lc = localContent[city.slug];
+
+// Deterministic seed for minor layout variations
+const seed = city.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+
+// SEO Meta Titles and Descriptions optimized for CTR
+const title = siteConfig.niche.seoTitleTemplate
+  .replace('{city}', city.name)
+  .replace('{zip}', city.zip);
+const description = siteConfig.niche.metaDescTemplate
+  .replace('{city}', city.name)
+  .replace('{zip}', city.zip)
+  .replace('{deptName}', city.deptName);
+
+// Fallbacks if local content has any issues
+const genericIntro = `Vous envisagez des travaux d'isolation thermique par l'extérieur (ITE) à **${city.name}** (${city.zip}) ? En zone climatique, l'enveloppe de façade est la principale source de déperdition de chaleur. Comparez gratuitement 3 devis d'artisans RGE certifiés du département ${city.deptName} (${city.deptCode}) • Service gratuit ✅`;
+const introText = lc?.intro_climatique || genericIntro;
+
+// FAQ Mapping for schema
+const localFaqList = lc?.faq_locale || [];
+const faqItems = localFaqList.length > 0 ? localFaqList : [
+  { q: `Quel est le prix au m² de l'ITE à ${city.name} ?`, a: `Le coût moyen d'une isolation extérieure à ${city.name} oscille entre 100€ et 250€ le m² selon la technique.` },
+  { q: `Quelles sont les aides ITE à ${city.name} ?`, a: `Vous cumulez MaPrimeRénov' (jusqu'à 75€/m²), les primes CEE, et la TVA 5,5% auprès de façadiers RGE.` }
+];
+
+// Schema.org Structured Data
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `Isolation Thermique par l'Extérieur (ITE) à ${city.name}`,
+    "description": description,
+    "serviceType": "Isolation par l'extérieur",
+    "areaServed": {
+      "@type": "City",
+      "name": city.name,
+      "postalCode": city.zip,
+      "containedInPlace": {
+        "@type": "AdministrativeArea",
+        "name": city.deptName
+      }
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": siteConfig.name,
+      "url": `https://www.${siteConfig.domain}`
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "100",
+      "highPrice": "250",
+      "unitText": "par m² pose incluse"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `https://www.${siteConfig.domain}` },
+      { "@type": "ListItem", "position": 2, "name": `ITE ${city.deptName}`, "item": `https://www.${siteConfig.domain}/departement/${city.deptCode.toLowerCase()}` },
+      { "@type": "ListItem", "position": 3, "name": city.name, "item": `https://www.${siteConfig.domain}/${city.slug}` }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`/${city.slug}`}
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section -->
+  <section class="gradient-hero text-white py-12 md:py-16 relative overflow-hidden">
+    <!-- Subtle architectural facade lines overlay -->
+    <div class="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <Breadcrumbs items={[
+        { label: "Annuaire Local", href: "/annuaire" },
+        { label: `${city.deptName} (${city.deptCode})`, href: `/departement/${city.deptCode.toLowerCase()}` },
+        { label: city.name, href: `/${city.slug}` },
+      ]} />
+
+      <div class="grid lg:grid-cols-5 gap-10 items-start mt-6">
+        <div class="lg:col-span-3 space-y-6">
+          <!-- Urgency/Savings Pulse Badge -->
+          <div class="inline-flex items-center gap-2 bg-accent-500 text-white font-space text-[11px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full animate-pulse-light shadow-md">
+            🏠 Jusqu'à 75€/m² d'aides MaPrimeRénov' 2026
+          </div>
+
+          <h1 class="text-3xl md:text-5xl font-bitter font-extrabold leading-tight text-white">
+            ITE à {city.name} ({city.zip}) : <br/>
+            <span class="text-teal-400">Prix au m² & Devis RGE 2026</span>
+          </h1>
+
+          <!-- Intro locale block 1 -->
+          <div class="text-lg text-gray-200 leading-relaxed font-light" set:html={introText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')} />
+
+          <!-- Benefit Badges list -->
+          <div class="grid sm:grid-cols-2 gap-3.5 pt-4">
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 shadow-inner">
+              <span class="text-teal-400 text-xl font-bold">✓</span>
+              <span class="text-sm font-medium text-gray-100">Bilan thermique façade inclus</span>
+            </div>
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 shadow-inner">
+              <span class="text-teal-400 text-xl font-bold">✓</span>
+              <span class="text-sm font-medium text-gray-100">Artisans certifiés RGE</span>
+            </div>
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 shadow-inner">
+              <span class="text-teal-400 text-xl font-bold">✓</span>
+              <span class="text-sm font-medium text-gray-100">Jusqu'à 75% d'aides déduites</span>
+            </div>
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 shadow-inner">
+              <span class="text-teal-400 text-xl font-bold">✓</span>
+              <span class="text-sm font-medium text-gray-100">Garantie décennale 10 ans</span>
+            </div>
+          </div>
+
+          <!-- Counter indicator -->
+          <p class="text-xs text-gray-400 font-space italic">
+            ⚡ 2 347 façades isolées via nos artisans en {city.deptName}
+          </p>
+        </div>
+
+        <!-- Devis Widget Card -->
+        <div class="lg:col-span-2" id="devis-form">
+          <div class="sticky top-20">
+            <QuoteWidget keyword={`ITE ${city.name} RGE`} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Space -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    
+    <!-- Row: DPE Gain Bar & Housing Info -->
+    <div class="grid lg:grid-cols-2 gap-8 items-start">
+      <!-- Left: Dynamic DPE Transition -->
+      <div>
+        <DpeBar 
+          beforeClass="G" 
+          afterClass="B" 
+          savingsAmount={seed % 2 === 0 ? "1 250€" : "1 420€"}
+        />
+      </div>
+      
+      <!-- Right: Block 2 (Parc Immobilier) -->
+      {lc?.parc_immobilier && (
+        <div class="bg-white rounded-2xl border border-gray-200/80 p-6 md:p-8 shadow-sm flex flex-col justify-between h-full min-h-[300px]">
+          <div>
+            <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">📊 Parc Immobilier Local</span>
+            <h2 class="text-2xl font-bitter font-bold text-gray-900 mb-4">
+              Diagnostic & Diagnostic DPE à {city.name}
+            </h2>
+            <div class="text-gray-600 leading-relaxed space-y-4" set:html={lc.parc_immobilier.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-semibold">$1</strong>')} />
+          </div>
+          <div class="bg-gray-50 border-l-4 border-accent-500 p-4 rounded-r-xl mt-6">
+            <p class="text-xs text-gray-700 italic">
+              <strong>Info ADEME :</strong> Le calendrier des passoires thermiques interdit la location des DPE G dès 2025 et DPE F dès 2028. L'ITE est la méthode la plus rapide pour y échapper.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Section: Block 3 (Technique Recommandée) & Block 6 (Artisans Locaux) -->
+    <div class="grid md:grid-cols-2 gap-8">
+      {lc?.technique_recommandee && (
+        <div class="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-sm border-t-[4px] border-t-secondary">
+          <span class="text-2xl block mb-2">⚙️</span>
+          <h3 class="font-bitter font-bold text-lg text-gray-900 mb-2.5">Technique ITE recommandée pour {city.name}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed" set:html={lc.technique_recommandee.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-bold">$1</strong>')} />
+        </div>
+      )}
+
+      {lc?.artisans_locaux && (
+        <div class="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-sm border-t-[4px] border-t-accent-500">
+          <span class="text-2xl block mb-2">🛠️</span>
+          <h3 class="font-bitter font-bold text-lg text-gray-900 mb-2.5">Artisans façadiers RGE à {city.name}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed" set:html={lc.artisans_locaux.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-bold">$1</strong>')} />
+        </div>
+      )}
+    </div>
+
+    <!-- Section: Price Table -->
+    <section class="space-y-6">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl md:text-3xl font-bitter font-bold text-gray-900">
+          💰 Coût de l'ITE au m² à {city.name} : Grille des Tarifs 2026
+        </h2>
+        <p class="text-gray-500 text-sm mt-2">
+          Tarifs indicatifs moyens intégrant la pose et la fourniture des isolants certifiés CSTB.
+        </p>
+      </div>
+      <PriceTable />
+    </section>
+
+    <!-- Row: Economie personnalisé & Aides locales -->
+    <div class="grid lg:grid-cols-2 gap-8 items-stretch">
+      <!-- Block 4: Calcul économies -->
+      {lc?.calcul_economies && (
+        <div class="bg-gradient-to-br from-secondary/5 to-teal-50/20 border border-secondary/20 rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-sm">
+          <div>
+            <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-2">🔥 Performance Chauffage</span>
+            <h3 class="font-bitter font-bold text-xl text-gray-900 mb-3">Combien allez-vous économiser à {city.name} ?</h3>
+            <p class="text-gray-700 leading-relaxed text-sm" set:html={lc.calcul_economies.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-950 font-bold">$1</strong>')} />
+          </div>
+          <div class="mt-6 text-xs text-gray-500">
+            *Simulation basée sur une consommation moyenne gaz/électricité d'une maison de plain-pied DPE G.
+          </div>
+        </div>
+      )}
+
+      <!-- Block 5: Aides locales -->
+      {lc?.aides_locales && (
+        <div class="bg-gradient-to-br from-accent-500/5 to-orange-50/20 border border-accent-500/20 rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-sm">
+          <div>
+            <span class="text-xs text-accent-600 font-bold font-space uppercase tracking-wider block mb-2">🎁 Financements & Subventions</span>
+            <h3 class="font-bitter font-bold text-xl text-gray-900 mb-3">Aides régionales & ANAH en {city.deptName}</h3>
+            <p class="text-gray-700 leading-relaxed text-sm" set:html={lc.aides_locales.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-950 font-bold">$1</strong>')} />
+          </div>
+          <div class="mt-6 text-xs text-gray-500">
+            *Aides cumulables validées selon la réglementation MaPrimeRénov' en vigueur pour l'année 2026.
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Section: Block 8 (Exemple chiffré) -->
+    {lc?.exemple_chiffre && (
+      <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+        <h3 class="font-bitter font-bold text-xl text-gray-900 mb-4">🏠 Exemple concret chiffré pour une maison à {city.name}</h3>
+        <div class="prose max-w-none text-gray-600 leading-relaxed" set:html={lc.exemple_chiffre.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-bold">$1</strong>')} />
+      </section>
+    )}
+
+    <!-- Section: FAQ Locale Accordion (Block 7) -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-6">
+      <h3 class="font-bitter font-bold text-xl text-gray-900 border-b border-gray-100 pb-3">
+        ❓ Foire Aux Questions (FAQ) — Isolation Extérieure à {city.name}
+      </h3>
+      <div class="space-y-4">
+        {faqItems.map((f, i) => (
+          <details class="group bg-gray-50 rounded-xl border border-gray-150 p-4 transition-all duration-200 [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex items-center justify-between gap-4 font-bold text-gray-900 cursor-pointer list-none">
+              <span class="text-sm md:text-base font-bitter">{f.q}</span>
+              <span class="text-secondary font-bold text-xl faq-chevron transform group-open:rotate-180 transition-transform duration-200">↓</span>
+            </summary>
+            <p class="text-sm text-gray-600 leading-relaxed mt-3 pt-3 border-t border-gray-200/50">
+              {f.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section: Internal linking Towns (Nearby Cities) -->
+    <section class="bg-gray-50 rounded-2xl border border-gray-200 p-6 md:p-8 space-y-6">
+      <h3 class="font-bitter font-bold text-lg text-gray-900">
+        📍 Isolation Extérieure à proximité de {city.name}
+      </h3>
+      <p class="text-sm text-gray-500">
+        Nos artisans façadiers interviennent également dans les communes voisines du {city.deptName} :
+      </p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+        {nearbyCities.map((nc) => (
+          <a
+            href={`/${nc.slug}`}
+            class="bg-white border border-gray-200 rounded-xl px-4 py-3.5 hover:border-secondary hover:shadow-md transition-all group text-center"
+          >
+            <span class="font-bitter font-bold text-gray-900 group-hover:text-secondary text-sm block">{nc.name}</span>
+            <span class="text-[10px] text-gray-400 font-space block mt-1">{nc.zip} • {nc.deptName}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

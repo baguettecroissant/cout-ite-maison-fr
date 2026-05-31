@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../../site.config';
+import { techniques } from '../../data/techniques';
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Techniques d'Isolation Extérieure — ${siteConfig.name}`,
+    "description": "Retrouvez les fiches explicatives des 4 techniques d'isolation par l'extérieur (ITE) : enduit sur PSE, laine de roche, bardage bois et composite.",
+    "url": `https://www.${siteConfig.domain}/techniques`,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `https://www.${siteConfig.domain}` },
+      { "@type": "ListItem", "position": 2, "name": "Techniques ITE" },
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={`Techniques d'Isolation Extérieure (ITE) RGE 2026 : Comparatif | ${siteConfig.name}`}
+  description="Découvrez notre comparatif des 4 techniques majeures d'isolation thermique par l'extérieur (ITE) : enduit mince PSE, enduit laine de roche, bardage bois naturel et composite."
+  canonical="/techniques"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="gradient-hero text-white py-12 md:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <span class="inline-flex bg-white/10 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider font-space uppercase">
+        ⚙️ FICHES TECHNIQUES RÉNOVATION RGE
+      </span>
+      <h1 class="text-3xl md:text-5xl font-bitter font-extrabold text-white">
+        Techniques d'Isolation Thermique par l'Extérieur
+      </h1>
+      <p class="text-gray-300 text-lg max-w-2xl mx-auto font-light">
+        Enduit mince sous isolant ou bardage ventilé ? Analysez les caractéristiques techniques, durabilités, et grilles de prix indicatifs par m² pour faire le bon choix.
+      </p>
+    </div>
+  </section>
+
+  <!-- Techniques list grid -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid md:grid-cols-2 gap-8">
+      {techniques.map((t) => (
+        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-3xl">{t.emoji}</span>
+                <h2 class="font-bitter font-bold text-xl text-gray-900">{t.shortName}</h2>
+              </div>
+              <span class="bg-teal-50 text-teal-800 border border-teal-200/50 px-2 py-0.5 rounded text-[10px] font-space font-semibold uppercase">{t.rValue}</span>
+            </div>
+            
+            <p class="text-gray-600 leading-relaxed text-sm font-light">
+              {t.summary}
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 text-[11px] font-space pt-2">
+              <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-150">
+                <span class="text-gray-400 block uppercase">Prix moyen posé</span>
+                <strong class="text-secondary block mt-0.5">{t.priceRange}</strong>
+              </div>
+              <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-150">
+                <span class="text-gray-400 block uppercase">Épaisseur type</span>
+                <strong class="text-secondary block mt-0.5">{t.thickness}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-gray-50 flex items-center justify-between">
+            <span class="text-xs text-gray-500 font-space">⏳ Vie : {t.lifespan}</span>
+            <a href={`/techniques/${t.slug}`} class="text-secondary hover:text-secondary-dark text-xs font-bold font-space">
+              Fiche technique complète →
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
