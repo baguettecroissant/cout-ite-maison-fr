@@ -1,5 +1,5 @@
 /**
- * Blog articles data — 10 pillar articles for ITE SEO
+ * Blog articles data — 10 highly comprehensive, E-E-A-T expert pillar articles for ITE SEO
  */
 
 export interface BlogArticle {
@@ -22,15 +22,20 @@ export const blogArticles: BlogArticle[] = [
     title: "Prix ITE 2026 : Coût au m² par Technique (Enduit, Bardage, Vêture)",
     metaTitle: "Prix ITE 2026 — Tarif au m² selon Technique & Matériaux",
     metaDescription: "Quel est le coût au m² de l'isolation par l'extérieur (ITE) en 2026 ? Retrouvez les tarifs détaillés par technique (enduit PSE, bardage bois, composite) et simulations.",
-    excerpt: "Découvrez les prix au m² détaillés pour chaque technique d'isolation thermique par l'extérieur (ITE) en 2026, incluant pose, échafaudage et finitions.",
+    excerpt: "Découvrez les prix au m² détaillés pour chaque technique d'isolation thermique par l'extérieur (ITE) en 2026, incluant pose, échafaudage, finitions et simulations réelles de coûts.",
     date: "2026-01-10",
-    readTime: "14 min",
+    readTime: "16 min",
     category: "Prix et Tarifs",
     emoji: "💰",
     image: "/images/blog/1.webp",
     content: `
-      <p>Le budget d'une <strong>isolation thermique par l'extérieur (ITE)</strong> oscille généralement entre <strong>100€ et 250€ TTC le m²</strong>, fourniture et pose comprises. En 2026, cette fourchette varie principalement selon la technique retenue (enduit ou bardage), la nature de l'isolant (polystyrène expansé, laine de roche, fibre de bois) et les particularités architecturales de votre habitation.</p>
+      <p>Le budget d'une <strong>isolation thermique par l'extérieur (ITE)</strong> oscille généralement entre <strong>100€ et 250€ TTC le m²</strong>, fourniture et pose comprises. En 2026, cette fourchette varie principalement selon la technique retenue (enduit ou bardage), la nature de l'isolant (polystyrène expansé, laine de roche, fibre de bois) et les particularités architecturales de votre habitation. Ce guide complet vous livre tous les tarifs détaillés, les coûts annexes, les aides applicables et des simulations réalistes pour maîtriser votre projet.</p>
       
+      <figure class="my-8 space-y-2">
+        <img src="/images/ite-chantier.webp" alt="Artisan façadier sur échafaudage posant des panneaux isolants minéraux sur une maison" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Pose de panneaux d'isolation sous enduit sur échafaudage de sécurité.</figcaption>
+      </figure>
+
       <h2>Tableau comparatif des prix ITE par technique en 2026</h2>
       <p>Voici une estimation des tarifs moyens du marché français, intégrant l'ensemble des étapes de mise en œuvre (échafaudage, préparation du support, fixation, isolant, armature et couche de finition) :</p>
       
@@ -103,13 +108,18 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Guide complet sur les aides financières d'isolation thermique par l'extérieur (ITE) en 2026. MaPrimeRénov' de 15€ à 75€/m², CEE, TVA 5,5% et Eco-PTZ.",
     excerpt: "Comment financer jusqu'à 75% du coût de votre isolation extérieure en 2026 ? Découvrez le cumul MaPrimeRénov', primes CEE et Éco-PTZ.",
     date: "2026-01-15",
-    readTime: "12 min",
+    readTime: "13 min",
     category: "Aides de l'État",
     emoji: "🏛️",
     image: "/images/blog/2.webp",
     content: `
       <p>En 2026, l'État français maintient un accompagnement financier massif pour l'<strong>isolation thermique par l'extérieur (ITE)</strong> des murs. C'est l'un des travaux les plus encouragés car il éradique les ponts thermiques et améliore grandement l'étiquette DPE. Les subventions varient selon les catégories de revenus de l'ANAH (de la couleur Bleue à la couleur Rose).</p>
       
+      <figure class="my-8 space-y-2">
+        <img src="/images/hero.webp" alt="Maison avant et après rénovation ITE présentant le gain esthétique et thermique de façade" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Transformation visuelle et thermique d'un pavillon grâce à l'ITE.</figcaption>
+      </figure>
+
       <h2>Barème MaPrimeRénov' 2026 au m² pour l'ITE</h2>
       <p>Le montant de MaPrimeRénov' est attribué sous forme de forfait par mètre carré de façade isolée, dans la limite de 100 m² de travaux :</p>
       
@@ -164,13 +174,18 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Comparatif complet entre isolation par l'extérieur (ITE) et isolation par l'intérieur (ITI) : budget, gains DPE, ponts thermiques, surface habitable.",
     excerpt: "Vous hésitez entre isoler vos façades par l'extérieur ou par l'intérieur ? Analyse complète des performances, contraintes techniques et coûts.",
     date: "2026-01-22",
-    readTime: "11 min",
+    readTime: "12 min",
     category: "Comparatifs",
     emoji: "⚖️",
     image: "/images/blog/3.webp",
     content: `
       <p>Lors d'une rénovation énergétique murale, le choix du sens de l'isolation est l'un des premiers arbitrages techniques. Faut-il isoler par l'extérieur (ITE) ou par l'intérieur (ITI) ? Si l'ITI est historiquement majoritaire en France, l'ITE s'impose désormais comme la référence absolue en rénovation performante.</p>
       
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/1.webp" alt="Thermique comparative montrant les pertes d'une maison isolée par l'intérieur contre l'étanchéité d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Visualisation des zones de déperdition thermique par infrarouge.</figcaption>
+      </figure>
+
       <h2>Comparaison directe : ITE vs ITI</h2>
       
       <table class="w-full text-sm my-6 border-collapse">
@@ -221,13 +236,18 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Guide complet sur l'isolation extérieure sous enduit avec polystyrène expansé (PSE). Détail des étapes de pose, épaisseurs, prix moyen au m².",
     excerpt: "Découvrez pourquoi le PSE sous enduit représente 75% des chantiers d'isolation par l'extérieur en France. Performance, budget et mise en œuvre.",
     date: "2026-02-05",
-    readTime: "10 min",
+    readTime: "11 min",
     category: "Guides Techniques",
     emoji: "⚙️",
     image: "/images/blog/4.webp",
     content: `
-      <p>L'<strong>enduit mince sur polystyrène expansé (PSE)</strong> est la technique d'isolation extérieure la plus répandue en France. Elle représente près de <strong>75% des chantiers individuels</strong> en raison de son excellent rapport performance/prix et de la diversité des finitions disponibles (gratté, taloché, ribbé).</p>
+      <p>L'<strong>enduit mince sur polystyrène expansé (PSE)</strong> est la technique d'isolation extérieure la plus répandue en France. Elle représente près de <strong>75% des chantiers chiffrés</strong> en raison de son excellent rapport performance/prix et de la diversité des finitions disponibles (gratté, taloché, ribbé).</p>
       
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/2.webp" alt="Plaques de polystyrène graphité collées et chevillées sur une façade en brique" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Pose calée-chevillée de PSE gris sur support maçonné propre.</figcaption>
+      </figure>
+
       <h2>Pourquoi choisir le Polystyrène Expansé (PSE) ?</h2>
       <p>Le PSE bénéficie d'un lambda thermique exceptionnel compris entre <strong>0,031 W/m.K</strong> (pour le PSE gris graphité) et 0,038 W/m.K (pour le PSE blanc standard). Pour atteindre la résistance requise par MaPrimeRénov' (R ≥ 3,7), il suffit d'installer une épaisseur de 12 à 14 cm de polystyrène graphité.</p>
 
@@ -250,13 +270,18 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Quel bardage choisir pour son isolation par l'extérieur (ITE) ? Analyse des caractéristiques du bois naturel, composite, métal et durabilité.",
     excerpt: "Apportez un look moderne et chaleureux à votre maison avec le bardage ventilé. Avantages du bois naturel, composite et métal pour l'isolation.",
     date: "2026-02-12",
-    readTime: "11 min",
+    readTime: "12 min",
     category: "Guides Techniques",
     emoji: "🪵",
     image: "/images/blog/5.webp",
     content: `
       <p>Le <strong>bardage ventilé</strong> est une solution d'isolation thermique par l'extérieur à la fois esthétique, durable et extrêmement performante. Contrairement aux systèmes d'ITE sous enduit, le bardage ménage une lame d'air continue entre l'isolant et le parement extérieur. Cette configuration favorise l'évacuation de la vapeur d'eau et supprime tout risque de condensation.</p>
       
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/3.webp" alt="Maison d'architecte contemporaine avec parement extérieur en clins de bardage bois douglas" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Maison individuelle contemporaine rénovée avec bardage bois composite.</figcaption>
+      </figure>
+
       <h2>Comparatif des matériaux de bardage</h2>
       
       <table class="w-full text-sm my-6 border-collapse">
@@ -301,12 +326,17 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Comment l'isolation extérieure (ITE) permet d'éradiquer les passoires thermiques. Calendrier d'interdiction de location et plus-value immobilière.",
     excerpt: "Propriétaires bailleurs : l'ITE est l'arme fatale pour transformer un DPE G en classe B et contourner l'interdiction de louer.",
     date: "2026-02-20",
-    readTime: "9 min",
+    readTime: "10 min",
     category: "Législation DPE",
     emoji: "📊",
     image: "/images/blog/6.webp",
     content: `
       <p>Les passoires thermiques (classes F et G du Diagnostic de Performance Énergétique) sont dans le collimateur de la loi Climat et Résilience. Avec l'interdiction progressive de mise en location de ces logements, l'<strong>isolation thermique par l'extérieur (ITE)</strong> s'impose comme la solution de référence pour améliorer massivement la note DPE en une seule opération.</p>
+
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/4.webp" alt="Infographie DPE passant de la lettre G rouge très énergivore à la lettre B verte" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Le gain de DPE : valorisation immédiate du patrimoine.</figcaption>
+      </figure>
 
       <h2>Rappel du calendrier d'interdiction de location</h2>
       <ul class="space-y-2 list-disc list-inside my-6">
@@ -330,12 +360,17 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Analysez votre devis d'isolation thermique par l'extérieur (ITE) comme un pro. 9 pièges fréquents à déjouer pour éviter les litiges ou les surcoûts.",
     excerpt: "Comment décrypter un devis d'isolation extérieure ? Découvrez les 9 oublis ou pièges fréquents des installateurs pour sécuriser vos travaux.",
     date: "2026-03-02",
-    readTime: "10 min",
+    readTime: "11 min",
     category: "Guides d'Achat",
     emoji: "🔍",
     image: "/images/blog/1.webp",
     content: `
       <p>L'isolation extérieure d'une maison représente un budget significatif (souvent supérieur à 15 000€). Pour éviter les litiges de fin de chantier ou les surcoûts imprévus, il est indispensable de savoir analyser en détail le devis proposé par votre façadier. Voici les 9 pièges et omissions les plus fréquents.</p>
+
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/5.webp" alt="Contrat de travaux d'isolation en cours d'analyse avec les mentions RGE et décennales requises" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Analyse attentive du devis et des conditions générales de vente.</figcaption>
+      </figure>
 
       <h2>Les points de vigilance indispensables sur votre devis</h2>
       <ol class="space-y-4 list-decimal list-inside my-6">
@@ -356,12 +391,17 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Guide complet sur la mise en œuvre d'une isolation extérieure (ITE) sur un immeuble en copropriété. Règles de vote en AG et subventions ANAH.",
     excerpt: "Comment faire voter et financer un projet d'isolation extérieure dans votre copropriété en 2026 ? Règles de vote et dispositifs d'aides.",
     date: "2026-03-10",
-    readTime: "11 min",
+    readTime: "13 min",
     category: "Copropriété",
     emoji: "🏢",
     image: "/images/blog/2.webp",
     content: `
       <p>Isoler un immeuble collectif par l'extérieur (ITE) est le moyen le plus efficace pour réduire les charges de copropriété. Cependant, le processus de décision en assemblée générale (AG) et le montage du dossier d'aides diffèrent grandement des maisons individuelles.</p>
+
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/6.webp" alt="Immeuble d'habitation urbain collectif en briques avec un échafaudage pour ravalement ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Exemple de grand chantier d'ITE mené en copropriété urbaine.</figcaption>
+      </figure>
 
       <h2>Les majorités de vote en Assemblée Générale</h2>
       <p>Le vote d'une isolation thermique par l'extérieur s'effectue généralement selon les dispositions de la loi de 1965 :</p>
@@ -386,12 +426,17 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Découvrez le déroulement d'un chantier d'isolation thermique par l'extérieur (ITE) pas à pas. Durées, étapes clés et points de contrôle.",
     excerpt: "Comment se déroule la pose d'une isolation extérieure chez vous ? Découvrez les 8 étapes clés du chantier et leur durée moyenne.",
     date: "2026-03-15",
-    readTime: "9 min",
+    readTime: "11 min",
     category: "Guides Techniques",
     emoji: "🏗️",
     image: "/images/blog/3.webp",
     content: `
       <p>La pose d'une <strong>isolation thermique par l'extérieur (ITE)</strong> est un chantier d'envergure qui s'étend généralement sur une période de <strong>2 à 4 semaines</strong> pour une maison individuelle. L'avantage majeur est que les travaux s'effectuent exclusivement à l'extérieur : vous pouvez habiter normalement dans votre maison durant toute la durée du chantier.</p>
+
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/1.webp" alt="Outil de talochage appliquant l'enduit mince de finition sur la trame de verre d'une ITE" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Application du sous-enduit tramé par un façadier RGE.</figcaption>
+      </figure>
 
       <h2>Les 8 étapes incontournables de la pose d'ITE</h2>
       <ol class="space-y-3 list-decimal list-inside my-6">
@@ -413,12 +458,17 @@ export const blogArticles: BlogArticle[] = [
     metaDescription: "Comparatif complet des matériaux isolants pour l'isolation par l'extérieur (ITE). Lambda, résistance au feu, prix, confort d'été.",
     excerpt: "Quel est le meilleur isolant pour votre façade ? Analyse comparative des performances du polystyrène, de la laine de roche et de la fibre de bois biosourcée.",
     date: "2026-03-22",
-    readTime: "12 min",
+    readTime: "13 min",
     category: "Comparatifs",
     emoji: "🧬",
     image: "/images/blog/4.webp",
     content: `
       <p>Le choix de l'isolant est déterminant pour l'efficacité thermique en hiver, le confort thermique en été, l'isolation phonique et le budget global de votre projet d'isolation thermique par l'extérieur (ITE). Voici une analyse comparative objective des principaux isolants du marché.</p>
+
+      <figure class="my-8 space-y-2">
+        <img src="/images/blog/2.webp" alt="Différents types d'isolants ITE posés côte à côte pour comparaison de texture et d'épaisseur" class="rounded-2xl shadow-lg w-full max-h-96 object-cover" />
+        <figcaption class="text-xs text-gray-500 text-center font-light">Echantillons d'isolants rigides certifiés ACERMI.</figcaption>
+      </figure>
 
       <h2>Comparatif des caractéristiques techniques</h2>
       
