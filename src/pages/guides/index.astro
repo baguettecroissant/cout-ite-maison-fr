@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { siteConfig } from '../../../site.config';
 import { blogArticles } from '../../data/blog-articles';
+import { techniques } from '../../data/techniques';
+import { brands } from '../../data/brands';
 
 const jsonLd = [
   {
@@ -80,6 +82,39 @@ const jsonLd = [
           </div>
         </a>
       ))}
+    </div>
+  </section>
+
+  <!-- Cross-linking vers autres silos -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-3">
+        <h3 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2">⚙️ Techniques de Pose ITE</h3>
+        <ul class="space-y-2">
+          {techniques.map((t) => (
+            <li>
+              <a href={`/techniques/${t.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                {t.emoji} {t.shortName} — {t.priceRange}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a href="/techniques" class="text-[11px] text-secondary font-bold font-space hover:underline block pt-1">Comparatif complet →</a>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-3">
+        <h3 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2">🏭 Fabricants Certifiés CSTB</h3>
+        <ul class="space-y-2">
+          {brands.map((b) => (
+            <li>
+              <a href={`/systemes/${b.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                • {b.name} ({b.phareSystem})
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a href="/systemes" class="text-[11px] text-secondary font-bold font-space hover:underline block pt-1">Tous les fabricants →</a>
+      </div>
     </div>
   </section>
 

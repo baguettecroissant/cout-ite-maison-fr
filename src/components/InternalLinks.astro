@@ -1,0 +1,176 @@
+---
+/**
+ * InternalLinks.astro — Composant de maillage interne cross-silo
+ * 
+ * Affiche des blocs de liens internes contextuels.
+ * Utilisé sur toutes les pages pour garantir la crawlabilité totale du site.
+ */
+import { siteConfig } from '../../site.config';
+import { blogArticles } from '../data/blog-articles';
+import { techniques } from '../data/techniques';
+import { brands } from '../data/brands';
+import { getAllCities, getAllDepartments } from '../lib/cities';
+
+interface Props {
+  /** Contexte pour exclure le silo courant et ajuster les libellés */
+  context?: 'city' | 'dept' | 'guide' | 'technique' | 'systeme' | 'index' | 'devis';
+  /** Limiter le nombre de guides affichés */
+  guidesLimit?: number;
+  /** Limiter le nombre de villes top affichées */
+  citiesLimit?: number;
+  /** Cacher certains silos (ne pas afficher guides, techniques, etc.) */
+  hideGuides?: boolean;
+  hideTechniques?: boolean;
+  hideSystemes?: boolean;
+  hideCities?: boolean;
+  hideDepts?: boolean;
+}
+
+const {
+  context = 'index',
+  guidesLimit = 3,
+  citiesLimit = 8,
+  hideGuides = false,
+  hideTechniques = false,
+  hideSystemes = false,
+  hideCities = false,
+  hideDepts = false,
+} = Astro.props;
+
+const topGuides = blogArticles.slice(0, guidesLimit);
+const topCities = getAllCities().slice(0, citiesLimit);
+const topDepts = getAllDepartments().slice(0, 8);
+---
+
+<section class="bg-gray-50 rounded-2xl border border-gray-200 p-6 md:p-8 space-y-8">
+  <div>
+    <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-1">🕸️ Explorer le site</span>
+    <h3 class="font-bitter font-bold text-lg text-gray-900">
+      Ressources & Guides pour votre projet d'isolation
+    </h3>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    {/* --- BLOC GUIDES --- */}
+    {!hideGuides && (
+      <div class="space-y-3">
+        <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+          <span>📚</span> Guides & Conseils ITE
+        </h4>
+        <ul class="space-y-2">
+          {topGuides.map((g) => (
+            <li>
+              <a href={`/guides/${g.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5 leading-relaxed">
+                {g.emoji} {g.title}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/guides" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">
+              Tous les guides →
+            </a>
+          </li>
+        </ul>
+      </div>
+    )}
+
+    {/* --- BLOC TECHNIQUES --- */}
+    {!hideTechniques && (
+      <div class="space-y-3">
+        <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+          <span>⚙️</span> Techniques de Pose ITE
+        </h4>
+        <ul class="space-y-2">
+          {techniques.map((t) => (
+            <li>
+              <a href={`/techniques/${t.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                {t.emoji} {t.shortName} — {t.priceRange}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/techniques" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">
+              Comparatif des techniques →
+            </a>
+          </li>
+        </ul>
+      </div>
+    )}
+
+    {/* --- BLOC SYSTÈMES / MARQUES --- */}
+    {!hideSystemes && (
+      <div class="space-y-3">
+        <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+          <span>🏭</span> Marques & Fabricants
+        </h4>
+        <ul class="space-y-2">
+          {brands.map((b) => (
+            <li>
+              <a href={`/systemes/${b.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                • {b.name} ({b.phareSystem})
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/systemes" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">
+              Tous les systèmes certifiés →
+            </a>
+          </li>
+        </ul>
+      </div>
+    )}
+
+    {/* --- BLOC TOP VILLES --- */}
+    {!hideCities && (
+      <div class="space-y-3">
+        <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+          <span>🏙️</span> Villes les Plus Demandées
+        </h4>
+        <div class="grid grid-cols-2 gap-1.5">
+          {topCities.map((c) => (
+            <a href={`/${c.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors py-0.5">
+              • ITE {c.name}
+            </a>
+          ))}
+        </div>
+        <a href="/annuaire" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">
+          Annuaire complet →
+        </a>
+      </div>
+    )}
+
+    {/* --- BLOC TOP DÉPARTEMENTS --- */}
+    {!hideDepts && (
+      <div class="space-y-3">
+        <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+          <span>🗺️</span> Départements Couverts
+        </h4>
+        <div class="grid grid-cols-2 gap-1.5">
+          {topDepts.map((d) => (
+            <a href={`/departement/${d.code.toLowerCase()}`} class="text-xs text-gray-600 hover:text-secondary transition-colors py-0.5">
+              • {d.name} ({d.code})
+            </a>
+          ))}
+        </div>
+        <a href="/annuaire" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">
+          Voir tous les départements →
+        </a>
+      </div>
+    )}
+
+    {/* --- BLOC DEVIS CTA --- */}
+    <div class="space-y-3">
+      <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-1.5">
+        <span>📋</span> Obtenir un Devis
+      </h4>
+      <p class="text-xs text-gray-600 leading-relaxed">
+        Comparez gratuitement les offres de 3 façadiers certifiés RGE dans votre département. Service 100% gratuit et sans engagement.
+      </p>
+      <a href="/devis" class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition-all shadow-sm">
+        🏠 Demander mes Devis Gratuits
+      </a>
+    </div>
+
+  </div>
+</section>

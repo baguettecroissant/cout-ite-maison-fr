@@ -4,6 +4,9 @@ import QuoteWidget from '../../components/QuoteWidget.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { siteConfig } from '../../../site.config';
 import { getAllDepartments, getCitiesByDepartment } from '../../lib/cities';
+import { blogArticles } from '../../data/blog-articles';
+import { techniques } from '../../data/techniques';
+import { brands } from '../../data/brands';
 
 export function getStaticPaths() {
   const departments = getAllDepartments();
@@ -175,6 +178,60 @@ const jsonLd = [
             <span class="text-xs text-gray-400 font-space block mt-1">{city.zip}</span>
           </a>
         ))}
+      </div>
+    </section>
+
+    <!-- Section: Cross-linking thématique -->
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 space-y-6">
+      <div>
+        <span class="text-xs text-secondary font-bold font-space uppercase tracking-wider block mb-1">🕸️ Ressources Complémentaires</span>
+        <h3 class="font-bitter font-bold text-lg text-gray-900">
+          Guides, Techniques & Systèmes pour l'ITE en {dept.name}
+        </h3>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="space-y-3">
+          <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2">📚 Guides Experts</h4>
+          <ul class="space-y-2">
+            {blogArticles.slice(0, 3).map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5 leading-relaxed">
+                  {g.emoji} {g.title}
+                </a>
+              </li>
+            ))}
+            <li><a href="/guides" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">Tous les guides →</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2">⚙️ Techniques de Pose</h4>
+          <ul class="space-y-2">
+            {techniques.map((t) => (
+              <li>
+                <a href={`/techniques/${t.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                  {t.emoji} {t.shortName} — {t.priceRange}
+                </a>
+              </li>
+            ))}
+            <li><a href="/techniques" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">Comparatif complet →</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bitter font-bold text-sm text-gray-900 border-b border-gray-200 pb-2">🏭 Fabricants Certifiés</h4>
+          <ul class="space-y-2">
+            {brands.map((b) => (
+              <li>
+                <a href={`/systemes/${b.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                  • {b.name} ({b.phareSystem})
+                </a>
+              </li>
+            ))}
+            <li><a href="/systemes" class="text-xs text-secondary font-bold font-space hover:underline block pt-1">Tous les systèmes →</a></li>
+          </ul>
+        </div>
       </div>
     </section>
 

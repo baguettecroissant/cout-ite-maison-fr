@@ -3,6 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import QuoteWidget from '../../components/QuoteWidget.astro';
 import { siteConfig } from '../../../site.config';
 import { techniques, type Technique } from '../../data/techniques';
+import { blogArticles } from '../../data/blog-articles';
+import { brands } from '../../data/brands';
+import { getAllCities } from '../../lib/cities';
+
+const topCities = getAllCities().slice(0, 8);
 
 export function getStaticPaths() {
   return techniques.map(tech => ({
@@ -175,6 +180,49 @@ const jsonLd = [
                 </li>
               ))}
             </ul>
+          </div>
+
+          <!-- Guides recommandés -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">📚 Guides Recommandés</h4>
+            <ul class="space-y-2">
+              {blogArticles.slice(0, 3).map(g => (
+                <li>
+                  <a href={`/guides/${g.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5 leading-relaxed">
+                    {g.emoji} {g.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="/guides" class="text-[11px] text-secondary font-bold font-space hover:underline block pt-1">Tous les guides →</a>
+          </div>
+
+          <!-- Systèmes compatibles -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">🏭 Fabricants Compatibles</h4>
+            <ul class="space-y-2">
+              {brands.map(b => (
+                <li>
+                  <a href={`/systemes/${b.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors block py-0.5">
+                    • {b.name} ({b.phareSystem})
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="/systemes" class="text-[11px] text-secondary font-bold font-space hover:underline block pt-1">Tous les fabricants →</a>
+          </div>
+
+          <!-- Top villes -->
+          <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+            <h4 class="font-bitter font-bold text-gray-900 text-sm border-b border-gray-150 pb-2">📍 Villes Populaires</h4>
+            <div class="grid grid-cols-2 gap-1.5">
+              {topCities.map(c => (
+                <a href={`/${c.slug}`} class="text-xs text-gray-600 hover:text-secondary transition-colors py-0.5">
+                  • ITE {c.name}
+                </a>
+              ))}
+            </div>
+            <a href="/annuaire" class="text-[11px] text-secondary font-bold font-space hover:underline block pt-1">Annuaire complet →</a>
           </div>
         </div>
       </div>

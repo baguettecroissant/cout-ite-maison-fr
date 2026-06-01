@@ -1,6 +1,14 @@
 ---
 import { siteConfig } from '../../site.config';
 import '../styles/global.css';
+import { blogArticles } from '../data/blog-articles';
+import { techniques } from '../data/techniques';
+import { brands } from '../data/brands';
+import { getAllCities, getAllDepartments } from '../lib/cities';
+
+const footerGuides = blogArticles.slice(0, 6);
+const footerCities = getAllCities().slice(0, 12);
+const footerDepts = getAllDepartments().slice(0, 12);
 
 interface Props {
   title: string;
@@ -73,11 +81,27 @@ const canonicalUrl = canonical
           <a href="/techniques" class="hover:text-secondary transition-colors">Techniques</a>
           <a href="/systemes" class="hover:text-secondary transition-colors">Systèmes & Marques</a>
           <a href="/annuaire" class="hover:text-secondary transition-colors">Annuaire</a>
+          <a href="/devis" class="hover:text-secondary transition-colors">Devis</a>
         </nav>
         <a href="/devis" class="bg-accent-500 hover:bg-accent-600 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-sm transform hover:scale-[1.02] active:scale-[0.98]">
           🏠 Devis Gratuit
         </a>
+        <!-- Mobile hamburger -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors" aria-label="Menu de navigation">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
       </div>
+      <!-- Mobile nav (hidden by default, toggled via JS, but links are in DOM for crawlers) -->
+      <nav id="mobile-menu" class="lg:hidden overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out border-t border-gray-100">
+        <div class="py-3 px-2 flex flex-col gap-1 text-sm font-medium text-gray-700">
+          <a href="/" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">🏠 Accueil</a>
+          <a href="/guides" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">📚 Guides ITE</a>
+          <a href="/techniques" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">⚙️ Techniques</a>
+          <a href="/systemes" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">🏭 Systèmes & Marques</a>
+          <a href="/annuaire" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">📍 Annuaire</a>
+          <a href="/devis" class="px-3 py-2 rounded-lg bg-accent-500 text-white font-bold text-center mt-1">Devis Gratuit</a>
+        </div>
+      </nav>
     </div>
   </header>
 
@@ -86,33 +110,81 @@ const canonicalUrl = canonical
     <slot />
   </main>
 
-  <!-- Footer -->
+  <!-- Mega Footer -->
   <footer class="bg-dark text-gray-400 py-16 mt-16 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-3 gap-8 mb-12">
-        <div class="md:col-span-2">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+
+        <!-- Col 1: À propos -->
+        <div class="lg:col-span-1">
           <div class="flex items-center gap-2 mb-4">
             <span class="text-2xl">{siteConfig.niche.emoji}</span>
-            <span class="text-white font-bitter font-bold text-xl">{siteConfig.name}</span>
+            <span class="text-white font-bitter font-bold text-lg">{siteConfig.name}</span>
           </div>
-          <p class="text-sm leading-relaxed text-gray-400 mb-4 max-w-sm">
+          <p class="text-xs leading-relaxed text-gray-400 mb-4">
             {siteConfig.description}
           </p>
-          <p class="text-xs text-gray-500">
-            Monétisation via ViteUnDevis — Catégorie #103. Les prix mentionnés sont à but indicatif pour l'année 2026.
-          </p>
-        </div>
-        <div>
-          <h4 class="text-white font-bitter font-bold mb-4">Niche Isolation</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/" class="hover:text-white transition-colors">Accueil principal</a></li>
-            <li><a href="/guides" class="hover:text-white transition-colors">Guides de prix & aides</a></li>
-            <li><a href="/techniques" class="hover:text-white transition-colors">Techniques d'isolation</a></li>
-            <li><a href="/systemes" class="hover:text-white transition-colors">Systèmes de marques</a></li>
-            <li><a href="/annuaire" class="hover:text-white transition-colors">Recherche locale</a></li>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="/" class="hover:text-white transition-colors">Accueil</a></li>
+            <li><a href="/devis" class="hover:text-white transition-colors">Demander un Devis</a></li>
+            <li><a href="/annuaire" class="hover:text-white transition-colors">Annuaire Local</a></li>
+            <li><a href="/mentions-legales" class="hover:text-white transition-colors">Mentions Légales</a></li>
           </ul>
         </div>
+
+        <!-- Col 2: Guides -->
+        <div>
+          <h4 class="text-white font-bitter font-bold text-sm mb-4">📚 Guides ITE</h4>
+          <ul class="space-y-1.5 text-xs">
+            {footerGuides.map((g) => (
+              <li><a href={`/guides/${g.slug}`} class="hover:text-white transition-colors leading-relaxed block">{g.emoji} {g.title.length > 40 ? g.title.substring(0, 40) + '…' : g.title}</a></li>
+            ))}
+            <li class="pt-1"><a href="/guides" class="text-teal-400 hover:text-teal-300 font-bold text-[11px] font-space">Tous les guides →</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Techniques & Systèmes -->
+        <div>
+          <h4 class="text-white font-bitter font-bold text-sm mb-4">⚙️ Techniques & Marques</h4>
+          <ul class="space-y-1.5 text-xs">
+            {techniques.map((t) => (
+              <li><a href={`/techniques/${t.slug}`} class="hover:text-white transition-colors">{t.emoji} {t.shortName}</a></li>
+            ))}
+            <li class="pt-1"><a href="/techniques" class="text-teal-400 hover:text-teal-300 font-bold text-[11px] font-space">Comparer les techniques →</a></li>
+          </ul>
+          <ul class="space-y-1.5 text-xs mt-4">
+            {brands.map((b) => (
+              <li><a href={`/systemes/${b.slug}`} class="hover:text-white transition-colors">• {b.name}</a></li>
+            ))}
+            <li class="pt-1"><a href="/systemes" class="text-teal-400 hover:text-teal-300 font-bold text-[11px] font-space">Tous les fabricants →</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Top Villes -->
+        <div>
+          <h4 class="text-white font-bitter font-bold text-sm mb-4">🏙️ Villes Populaires</h4>
+          <ul class="space-y-1.5 text-xs">
+            {footerCities.map((c) => (
+              <li><a href={`/${c.slug}`} class="hover:text-white transition-colors">ITE {c.name} ({c.zip})</a></li>
+            ))}
+            <li class="pt-1"><a href="/annuaire" class="text-teal-400 hover:text-teal-300 font-bold text-[11px] font-space">Toutes les villes →</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: Top Départements -->
+        <div>
+          <h4 class="text-white font-bitter font-bold text-sm mb-4">🗺️ Départements</h4>
+          <ul class="space-y-1.5 text-xs">
+            {footerDepts.map((d) => (
+              <li><a href={`/departement/${d.code.toLowerCase()}`} class="hover:text-white transition-colors">{d.name} ({d.code})</a></li>
+            ))}
+            <li class="pt-1"><a href="/annuaire" class="text-teal-400 hover:text-teal-300 font-bold text-[11px] font-space">Tous les départements →</a></li>
+          </ul>
+        </div>
+
       </div>
+
+      <!-- Bottom bar -->
       <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <p>© {new Date().getFullYear()} {siteConfig.name} — Tous droits réservés. <a href="/mentions-legales" class="underline hover:text-white">Mentions Légales</a>.</p>
         <p class="text-center md:text-right">Ravalement & Performance Énergétique Globale RGE 2026</p>
@@ -129,6 +201,20 @@ const canonicalUrl = canonical
 
   <script is:inline>
   (function() {
+    // Mobile menu toggle
+    var menuBtn = document.getElementById('mobile-menu-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function() {
+        if (mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px') {
+          mobileMenu.style.maxHeight = '0px';
+        } else {
+          mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+        }
+      });
+    }
+
+    // Sticky CTA
     var cta = document.getElementById('sticky-cta');
     if (!cta) return;
 
